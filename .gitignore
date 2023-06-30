@@ -3,6 +3,7 @@
 .vscode/
 bin*/
 logs/
+.idea/
 
 # Files
 *.user
