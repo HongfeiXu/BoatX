@@ -5,7 +5,7 @@ bin*/
 logs/
 .idea/
 __pycache__/
-obj\
+obj/
 
 # Files
 *.user
