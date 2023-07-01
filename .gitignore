@@ -1,7 +1,8 @@
 # Directories
 .vs/
 .vscode/
-bin*/
+bin/
+bin-obj/
 logs/
 .idea/
 __pycache__/
@@ -16,6 +17,7 @@ obj/
 *.sln
 *Makefile
 *.pyc
+tmp.py
 
 # Allow list
 !premake5.exe
