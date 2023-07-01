@@ -1,23 +1,26 @@
 import subprocess
 import globals
+import sys
 
 
-def build_on_windows():
-    subprocess.call(["cmd.exe", "/c", "premake\\premake5", "vs2022"])
+def gen_on_windows():
+    return subprocess.call(["cmd.exe", "/c", "premake\\premake5", "vs2022"])
 
-def build_on_linux():
+def gen_on_linux():
     raise NotImplementedError
 
-def build_on_mac():
+def gen_on_mac():
     raise NotImplementedError
 
 
 if __name__ == "__main__":
-    if globals.IsWindows():
-        build_on_windows()
-    elif globals.IsLinux():
-        build_on_linux()
-    elif globals.IsMac():
-        build_on_mac()
+    ret = 0
+    if globals.is_windows():
+        ret = gen_on_windows()
+    elif globals.is_linux():
+        ret = gen_on_linux()
+    elif globals.is_mac():
+        ret = gen_on_mac()
     else:
         raise NotImplementedError
+    sys.exit(ret)
