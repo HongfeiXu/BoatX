@@ -5,7 +5,7 @@ import globals
 def build_on_windows(building_config):
     VS_BUILD_PATH = r"F:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe"
     sln_name = globals.ENGINE_NAME + ".sln"
-    subprocess.call(["cmd.exe", "/c", VS_BUILD_PATH, sln_name, "/property:Configuration={}".format(building_config)])
+    return subprocess.call(["cmd.exe", "/c", VS_BUILD_PATH, sln_name, "/property:Configuration={}".format(building_config)])
 
 
 if __name__ == "__main__":

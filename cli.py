@@ -1,9 +1,3 @@
-# cli build
-# cli run
-# cli gen
-# cli version
-# cli gen build run
-
 import os
 import subprocess
 import sys
@@ -52,10 +46,10 @@ if __name__ == "__main__":
         print("Executing: ", " ".join(cmd_args))
         time_start = time.time()
         if run_cmd(cmd_args) != 0:
-            print(f"Error: run cmd \"{cmd_args}\" failed")
+            print(f"Error: run cmd \"{' '.join(cmd_args)}\" failed")
             break
         time_used = time.time() - time_start
-        print("Finish: {}, take {} secs".format(cmd_args[0], round(time_used, 3)))
+        print("Finish: {}, take {} secs".format(cmd_args, round(time_used, 3)))
         print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
         i = i + 1
 
