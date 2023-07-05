@@ -1,16 +1,12 @@
 #include <iostream>
-#include "boatx\engine.h"
+#include "boatx/engine.h"
 
 int main()
 {
     std::cout << "Hello, this is boatx, your first game engine!" << std::endl;
-	boatx::GetInfo();
 
-    boatx::Initialize();
-    boatx::ShutDown();
-
-#ifdef BOATX_PLATFORM_WINDOWS
-    system("pause");
-#endif
+    boatx::Engine& engine = boatx::Engine::Instance();
+    engine.Run();
+    
     return 0;
 }

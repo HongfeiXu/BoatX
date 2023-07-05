@@ -14,6 +14,7 @@ odir = "bin-obj/%{cfg.buildcfg}/%{prj.name}"
 
 -- External Dependencies
 external = {}
+external["maclibs"] = "external/maclibs"
 external["sdl2"] = "external/sdl2"
 
 
@@ -141,6 +142,9 @@ project "boatxeditor"
         {
             "BOATX_PLATFORM_MAC"
         }
+        
+        abspath = path.getabsolute("%{externals.maclibs}")
+        linkoptions {"-f ".. abspath}
         links
         {
             "SDL2.framework"
