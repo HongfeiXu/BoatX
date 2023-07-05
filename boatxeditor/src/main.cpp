@@ -6,9 +6,11 @@ int main()
     std::cout << "Hello, this is boatx, your first game engine!" << std::endl;
 	boatx::GetInfo();
 
-    int a = boatx::Add(10, 5);
-    int b = boatx::Sub(10, 5);
+    boatx::Initialize();
+    boatx::ShutDown();
 
-
+#ifdef BOATX_PLATFORM_WINDOWS
+    system("pause");
+#endif
     return 0;
 }

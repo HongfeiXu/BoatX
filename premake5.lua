@@ -11,6 +11,12 @@ workspace "boatx"
 tdir = "bin/%{cfg.buildcfg}/%{prj.name}"
 odir = "bin-obj/%{cfg.buildcfg}/%{prj.name}"
 
+
+-- External Dependencies
+external = {}
+external["sdl2"] = "external/sdl2"
+
+
 project "boatx"
     location "boatx"
     kind "StaticLib"
@@ -30,7 +36,8 @@ project "boatx"
 
     externalincludedirs
     {
-        "%{prj.name}/include/boatx"
+        "%{prj.name}/include/boatx",
+        "%{external.sdl2}/include"
     }
 
     flags
@@ -38,6 +45,7 @@ project "boatx"
         "FatalWarnings"
     }
 
+    -- platform relates
     filter {"system:windows" , "configurations:*"}
         systemversion "latest"
         defines
@@ -62,6 +70,7 @@ project "boatx"
             "BOATX_PLATFORM_LINUX"
         }
 
+    -- debug\release relates
     filter "configurations:Debug"
         defines
         {
@@ -78,6 +87,7 @@ project "boatx"
         runtime "Release"
         symbols "off"
         optimize "on"
+
 
 project "boatxeditor"
     location "boatxeditor"
@@ -105,6 +115,36 @@ project "boatxeditor"
     {
         "FatalWarnings"
     }
+
+    filter {"system:windows" , "configurations:*"}
+        systemversion "latest"
+        defines
+        {
+            "BOATX_PLATFORM_WINDOWS"
+        }
+        libdirs
+        {
+            "%{external.sdl2}/lib"
+        }
+        links
+        {
+            "SDL2"
+        }
+
+    filter {"system:macosx" , "configurations:*"}
+        xcodebuildsettings
+        {
+            ["MACOSX_DEPLOYMENT_TARGET"] = "10.15",
+            ["UserModernBuildSystem"] = "NO"
+        }    
+        defines
+        {
+            "BOATX_PLATFORM_MAC"
+        }
+        links
+        {
+            "SDL2.framework"
+        }
 
     filter {"system:linux" , "configurations:*"}
         defines
