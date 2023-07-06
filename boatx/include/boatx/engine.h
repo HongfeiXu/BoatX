@@ -6,13 +6,19 @@ namespace boatx
 {
     class Engine {
     public:
-        ~Engine() {}
+        ~Engine() = default;
+        // singleton
+        Engine(const Engine&) = delete;
+        Engine& operator=(const Engine&) = delete;
         static Engine& Instance();
-        void Run();
 
+        void Run();
         inline void Quit() { mIsRunning = false; };
 
     private:
+        // singleton
+        Engine();
+
         void GetInfo();
         bool Initialize();
         void ShutDown();
@@ -20,9 +26,5 @@ namespace boatx
     private:
         core::Window mWindow;
         bool mIsRunning;
-
-        // singleton
-        Engine();
-        static Engine* mInstance;
     };
 }

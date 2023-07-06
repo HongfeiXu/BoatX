@@ -6,11 +6,8 @@ namespace boatx
 {
     Engine& Engine::Instance()
     {
-        if (!mInstance)
-        {
-            mInstance = new Engine();
-        }
-        return *mInstance;
+        static Engine instance;
+        return instance;
     }
 
     void Engine::Run()
@@ -18,7 +15,7 @@ namespace boatx
         if (Initialize())
         {
             // core loop
-            while(mIsRunning)
+            while (mIsRunning)
             {
                 mWindow.PumpEvents();
             }
@@ -62,9 +59,6 @@ namespace boatx
         mWindow.ShutDown();
         SDL_Quit();
     }
-
-    // singleton
-    Engine* Engine::mInstance = nullptr;
 
     Engine::Engine()
         : mIsRunning(false)
