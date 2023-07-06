@@ -1,6 +1,6 @@
-#include <iostream>
 #include "engine.h"
 #include "sdl2/SDL.h"
+#include "log.h"
 
 namespace boatx
 {
@@ -26,27 +26,35 @@ namespace boatx
 
     bool Engine::Initialize()
     {
+        BOATX_ASSERT(!mIsInitialized, "Attempting to call Engine::Initialize() more than once!");
+
+        // Managers
+        mLogManager.Initialize();
+
+        GetInfo();
+
         bool ret = false;
         if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
         {
-            std::cout << "Error initialize SDL2: " << SDL_GetError() << std::endl;
+            BOATX_ERROR("Error initialize SDL2: {}", SDL_GetError());
         }
         else
         {
             SDL_version version;
             SDL_VERSION(&version);
-            std::cout << "Version of SDL2: " << (uint32_t)version.major << "." << (uint32_t)version.minor << "." << (uint32_t)version.patch << std::endl;
+            BOATX_INFO("Version of SDL2: {}.{}.{}", (uint32_t)version.major, (uint32_t)version.minor, (uint32_t)version.patch);
 
             if (mWindow.Create())
             {
                 ret = true;
                 mIsRunning = true;
+                mIsInitialized = true;
             }
         }
 
         if (!ret)
         {
-            std::cout << "Engine initialization failed. Shutting down." << std::endl;
+            BOATX_ERROR("Engine initialization failed. Shutting down.");
             ShutDown();
         }
 
@@ -56,33 +64,38 @@ namespace boatx
     void Engine::ShutDown()
     {
         mIsRunning = false;
+        mIsInitialized = false;
+
+        // Managers - usually in reverse order
+        mLogManager.ShutDown();
+
+        // Shutdown SDL
         mWindow.ShutDown();
         SDL_Quit();
     }
 
     Engine::Engine()
         : mIsRunning(false)
+        , mIsInitialized(false)
     {
-        GetInfo();
     }
 
     void Engine::GetInfo()
     {
-        std::cout << "GetInfo" << std::endl;
 #ifdef BOATX_CONFIG_DEBUG
-        std::cout << "\tconfigurations:Debug" << std::endl;
+        BOATX_DEBUG("Configurations: DEBUG");
 #endif
 #ifdef BOATX_CONFIG_RELEASE
-        std::cout << "\tconfigurations:Release" << std::endl;
+        BOATX_DEBUG("Configurations: RELEASE");
 #endif
 #ifdef BOATX_PLATFORM_WINDOWS
-        std::cout << "\tBOATX_PLATFORM_WINDOWS" << std::endl;
+        BOATX_DEBUG("Platform: WINDOWS");
 #endif
 #ifdef BOATX_PLATFORM_MAC
-        std::cout << "\tBOATX_PLATFORM_MAC" << std::endl;
+        BOATX_DEBUG("Platform: MAC");
 #endif
 #ifdef BOATX_PLATFORM_LINUX
-        std::cout << "\tBOATX_PLATFORM_LINUX" << std::endl;
+        BOATX_DEBUG("Platform: LINUX");
 #endif
     }
 } // namespace boatx

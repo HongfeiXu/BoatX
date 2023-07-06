@@ -1,13 +1,14 @@
 #pragma once
 
 #include "core/window.h"
+#include "managers/logmanager.h"
 
 namespace boatx
 {
     class Engine {
     public:
         ~Engine() = default;
-        // singleton
+        // Singleton
         Engine(const Engine&) = delete;
         Engine& operator=(const Engine&) = delete;
         static Engine& Instance();
@@ -16,15 +17,20 @@ namespace boatx
         inline void Quit() { mIsRunning = false; };
 
     private:
-        // singleton
+        // Singleton
         Engine();
 
         void GetInfo();
+
         bool Initialize();
         void ShutDown();
 
     private:
         core::Window mWindow;
         bool mIsRunning;
+        bool mIsInitialized;
+
+        // Managers
+        managers::LogManager mLogManager;
     };
 }

@@ -16,6 +16,7 @@ odir = "bin-obj/%{cfg.buildcfg}/%{prj.name}"
 external = {}
 external["maclibs"] = "external/maclibs"
 external["sdl2"] = "external/sdl2"
+external["spdlog"] = "external/spdlog"
 
 
 project "boatx"
@@ -38,7 +39,8 @@ project "boatx"
     externalincludedirs
     {
         "%{prj.name}/include/boatx",
-        "%{external.sdl2}/include"
+        "%{external.sdl2}/include",
+        "%{external.spdlog}/include"
     }
 
     flags
