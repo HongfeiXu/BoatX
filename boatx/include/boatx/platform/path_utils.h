@@ -4,7 +4,7 @@
 
 namespace boatx::platform
 {
-    class Path
+    class PathUtils
     {
     public:
         static std::string GetFilePureName(const std::string& fileFullName);

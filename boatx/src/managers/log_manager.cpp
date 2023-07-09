@@ -1,9 +1,9 @@
-#include "managers/logmanager.h"
+#include "managers/log_manager.h"
 
 #include "log.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/basic_file_sink.h"
-#include "platform/path.h"
+#include "platform/path_utils.h"
 
 #include <memory>
 #include <filesystem>
@@ -18,7 +18,7 @@ namespace boatx::managers
         consoleSink->set_pattern("%^[%Y-%m-%d %H:%M:%S.%e][%L] %v%$");
 
         // output log to file
-        auto logFilePath = platform::Path::PathJoin({ logFolderPath, "log.txt" });
+        auto logFilePath = platform::PathUtils::PathJoin({ logFolderPath, "log.txt" });
         auto fileSink= std::make_shared<spdlog::sinks::basic_file_sink_mt>(logFilePath, true);
         fileSink->set_level(spdlog::level::trace);
         fileSink->set_pattern("%^[%Y-%m-%d %H:%M:%S.%e][%L] %v%$");

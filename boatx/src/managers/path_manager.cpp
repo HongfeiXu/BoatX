@@ -1,5 +1,5 @@
-#include "managers/pathmanager.h"
-#include "platform/path.h"
+#include "managers/path_manager.h"
+#include "platform/path_utils.h"
 
 #include <filesystem>
 
@@ -16,7 +16,7 @@ namespace boatx::managers
     std::string PathManager::GetLogFolderPath() const
     {
         fs::path temp(mBinFilePath);
-        auto logFolderPath = platform::Path::PathJoin({ temp.parent_path().string(), "logs" });
+        auto logFolderPath = platform::PathUtils::PathJoin({ temp.parent_path().string(), "logs" });
         return logFolderPath;
     }
 }

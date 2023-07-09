@@ -1,8 +1,8 @@
 #pragma once
 
 #include "core/window.h"
-#include "managers/logmanager.h"
-#include "managers/pathmanager.h"
+#include "managers/log_manager.h"
+#include "managers/path_manager.h"
 
 namespace boatx
 {

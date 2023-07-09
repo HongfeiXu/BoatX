@@ -1,4 +1,4 @@
-#include "platform/path.h"
+#include "platform/path_utils.h"
 #include <filesystem>
 
 namespace fs = std::filesystem;
@@ -6,13 +6,13 @@ namespace fs = std::filesystem;
 
 namespace boatx::platform
 {
-    std::string Path::GetFilePureName(const std::string& fileFullName)
+    std::string PathUtils::GetFilePureName(const std::string& fileFullName)
     {
         fs::path temp(fileFullName);
         return temp.stem().string();
     }
 
-    std::string Path::PathJoin(const std::initializer_list<std::string>& filePaths)
+    std::string PathUtils::PathJoin(const std::initializer_list<std::string>& filePaths)
     {
         fs::path temp;
         for (const auto filePath : filePaths)
