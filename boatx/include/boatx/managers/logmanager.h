@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 
 namespace boatx::managers
 {
@@ -8,7 +9,7 @@ namespace boatx::managers
         LogManager() = default;
         ~LogManager() = default;
 
-        void Initialize();
+        void Initialize(const std::string& logFolderPath);
         void ShutDown();
     };
 }

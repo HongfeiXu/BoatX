@@ -10,27 +10,14 @@ namespace boatx
         return instance;
     }
 
-    void Engine::Run()
-    {
-        if (Initialize())
-        {
-            // core loop
-            while (mIsRunning)
-            {
-                mWindow.PumpEvents();
-            }
-        }
-
-        ShutDown();
-    }
-
-    bool Engine::Initialize()
-    {
+    bool Engine::Initialize(const std::string& binPath)
+{
         BOATX_ASSERT(!mIsInitialized, "Attempting to call Engine::Initialize() more than once!");
 
         // Managers
-        mLogManager.Initialize();
+        InitializeManagers(binPath);
 
+        // GetInfo after Managers initialized
         GetInfo();
 
         bool ret = false;
@@ -61,17 +48,43 @@ namespace boatx
         return ret;
     }
 
+    void Engine::Run()
+    {
+        if (mIsInitialized)
+        {
+            // core loop
+            while (mIsRunning)
+            {
+                mWindow.PumpEvents();
+            }
+        }
+
+        ShutDown();
+    }
+
     void Engine::ShutDown()
     {
         mIsRunning = false;
         mIsInitialized = false;
 
         // Managers - usually in reverse order
-        mLogManager.ShutDown();
+        ShutDownManagers();
 
         // Shutdown SDL
         mWindow.ShutDown();
         SDL_Quit();
+    }
+
+    void Engine::InitializeManagers(const std::string& binPath)
+{
+        mPathManager.Initialize(binPath);
+        mLogManager.Initialize(mPathManager.GetLogFolderPath());
+    }
+
+    void Engine::ShutDownManagers()
+    {
+        mLogManager.ShutDown();
+        mPathManager.ShutDown();
     }
 
     Engine::Engine()

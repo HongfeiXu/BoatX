@@ -2,6 +2,7 @@
 
 #include "core/window.h"
 #include "managers/logmanager.h"
+#include "managers/pathmanager.h"
 
 namespace boatx
 {
@@ -13,6 +14,7 @@ namespace boatx
         Engine& operator=(const Engine&) = delete;
         static Engine& Instance();
 
+        bool Initialize(const std::string& binPath);
         void Run();
         inline void Quit() { mIsRunning = false; };
 
@@ -21,9 +23,10 @@ namespace boatx
         Engine();
 
         void GetInfo();
-
-        bool Initialize();
         void ShutDown();
+
+        void InitializeManagers(const std::string& binPath);
+        void ShutDownManagers();
 
     private:
         core::Window mWindow;
@@ -31,6 +34,7 @@ namespace boatx
         bool mIsInitialized;
 
         // Managers
+        managers::PathManager mPathManager;
         managers::LogManager mLogManager;
     };
 }

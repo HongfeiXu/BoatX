@@ -3,23 +3,25 @@
 #include "log.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/basic_file_sink.h"
+#include "platform/path.h"
 
 #include <memory>
+#include <filesystem>
 
 
 namespace boatx::managers
 {
-    void LogManager::Initialize()
-    {        
+    void LogManager::Initialize(const std::string& logFolderPath)
+{        
         auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
         // pattern format check pattern_formatter-inl.h
-        consoleSink->set_pattern("%^[%Y-%m-%d %H:%M:%S.%e][%l] %v%$");
+        consoleSink->set_pattern("%^[%Y-%m-%d %H:%M:%S.%e][%L] %v%$");
 
-        // output log to current running project dir, change to bin dir by hardcode
-        // maybe a more flexable way?
-        auto fileSink= std::make_shared<spdlog::sinks::basic_file_sink_mt>("../bin/logs/multisink.txt", true);
+        // output log to file
+        auto logFilePath = platform::Path::PathJoin({ logFolderPath, "log.txt" });
+        auto fileSink= std::make_shared<spdlog::sinks::basic_file_sink_mt>(logFilePath, true);
         fileSink->set_level(spdlog::level::trace);
-        fileSink->set_pattern("%^[%Y-%m-%d %H:%M:%S.%e][%l] %v%$");
+        fileSink->set_pattern("%^[%Y-%m-%d %H:%M:%S.%e][%L] %v%$");
 
 
         std::vector<spdlog::sink_ptr> sinks{ consoleSink, fileSink };

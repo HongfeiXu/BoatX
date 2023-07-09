@@ -2,6 +2,7 @@
 
 struct SDL_Window;
 
+
 namespace boatx::core 
 {
     class Window 
