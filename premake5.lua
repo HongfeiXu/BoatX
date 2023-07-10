@@ -17,6 +17,10 @@ external = {}
 external["maclibs"] = "external/maclibs"
 external["sdl2"] = "external/sdl2"
 external["spdlog"] = "external/spdlog"
+external["glad"] = "external/glad"
+
+-- Process Glad before anything else
+include "external/glad"
 
 
 project "boatx"
@@ -46,6 +50,11 @@ project "boatx"
     flags
     {
         "FatalWarnings"
+    }
+
+    defines
+    {
+        "GLFW_INCLUDE_NONE" -- Ensures glad doesn't include glfw
     }
 
     -- platform relates
@@ -131,7 +140,8 @@ project "boatxeditor"
         }
         links
         {
-            "SDL2"
+            "SDL2",
+            "glad"
         }
 
     filter {"system:macosx" , "configurations:*"}
@@ -144,18 +154,23 @@ project "boatxeditor"
         {
             "BOATX_PLATFORM_MAC"
         }
-        
         abspath = path.getabsolute("%{externals.maclibs}")
         linkoptions {"-f ".. abspath}
         links
         {
-            "SDL2.framework"
+            "SDL2.framework",
+            "glad"
         }
 
     filter {"system:linux" , "configurations:*"}
         defines
         {
             "BOATX_PLATFORM_LINUX"
+        }
+        links
+        {
+            "SDL2",
+            "glad"
         }
 
     filter "configurations:Debug"
