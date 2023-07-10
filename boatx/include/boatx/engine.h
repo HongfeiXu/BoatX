@@ -29,12 +29,12 @@ namespace boatx
         void ShutDownManagers();
 
     private:
-        core::Window mWindow;
-        bool mIsRunning;
-        bool mIsInitialized;
+        core::Window    mWindow;
+        bool            mIsRunning;
+        bool            mIsInitialized;
 
         // Managers
-        managers::PathManager mPathManager;
-        managers::LogManager mLogManager;
+        managers::PathManager   mPathManager;
+        managers::LogManager    mLogManager;
     };
 }

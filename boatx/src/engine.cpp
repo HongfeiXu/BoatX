@@ -14,7 +14,7 @@ namespace boatx
 {
         BOATX_ASSERT(!mIsInitialized, "Attempting to call Engine::Initialize() more than once!");
 
-        // Managers
+        // Initialize Managers
         InitializeManagers(binPath);
 
         // GetInfo after Managers initialized
@@ -31,7 +31,8 @@ namespace boatx
             SDL_VERSION(&version);
             BOATX_INFO("Version of SDL2: {}.{}.{}", (uint32_t)version.major, (uint32_t)version.minor, (uint32_t)version.patch);
 
-            if (mWindow.Create())
+            core::WindowCreateInfo windowCreateInfo{800, 600, "BoatXEngine"};
+            if (mWindow.Create(windowCreateInfo))
             {
                 ret = true;
                 mIsRunning = true;
@@ -56,6 +57,12 @@ namespace boatx
             while (mIsRunning)
             {
                 mWindow.PumpEvents();
+
+                mWindow.BeginRender();
+
+                // render stuff..
+
+                mWindow.EndRender();
             }
         }
 
@@ -67,7 +74,7 @@ namespace boatx
         mIsRunning = false;
         mIsInitialized = false;
 
-        // Managers - usually in reverse order
+        // Shutdown Managers
         ShutDownManagers();
 
         // Shutdown SDL
@@ -83,6 +90,7 @@ namespace boatx
 
     void Engine::ShutDownManagers()
     {
+        // usually in reverse order
         mLogManager.ShutDown();
         mPathManager.ShutDown();
     }
@@ -101,6 +109,7 @@ namespace boatx
 #ifdef BOATX_CONFIG_RELEASE
         BOATX_DEBUG("Configurations: RELEASE");
 #endif
+
 #ifdef BOATX_PLATFORM_WINDOWS
         BOATX_DEBUG("Platform: WINDOWS");
 #endif

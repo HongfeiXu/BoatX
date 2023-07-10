@@ -44,7 +44,8 @@ project "boatx"
     {
         "%{prj.name}/include/boatx",
         "%{external.sdl2}/include",
-        "%{external.spdlog}/include"
+        "%{external.spdlog}/include",
+        "%{external.glad}/include"
     }
 
     flags
