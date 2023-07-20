@@ -10,6 +10,8 @@ namespace boatx::core
     {
         int         width{ 1280 };
         int         height{ 720 };
+        int         minWidth{ 200 };
+        int         minHeight{ 200 };
         const char* title{ "BoatX" };
     };
 

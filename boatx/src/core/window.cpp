@@ -33,29 +33,20 @@ namespace boatx::core
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-        SDL_SetWindowMinimumSize(mWindow, 200, 200);
+        SDL_SetWindowMinimumSize(mWindow, windowCreateInfo.minWidth, windowCreateInfo.minHeight);
         
         mGLContext = SDL_GL_CreateContext(mWindow);
         if (mGLContext == nullptr)
         {
             BOATX_ERROR("Error creating OpenGL context {}", SDL_GetError());
+            return false;
         }
 
-        gladLoadGLLoader(SDL_GL_GetProcAddress);
-
-        // TODO: Move this to a renderer initialization
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LEQUAL);
-
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        glClearColor(
-            static_cast<float>(0x64) / static_cast<float>(0xFF),
-            static_cast<float>(0x95) / static_cast<float>(0xFF),
-            static_cast<float>(0xED) / static_cast<float>(0xFF),
-            1
-        );
+        if (!gladLoadGLLoader(SDL_GL_GetProcAddress))
+        {
+            BOATX_ERROR("Error gladLoadGLLoader");
+            return false;
+        }
 
         return true;
     }
@@ -75,6 +66,12 @@ namespace boatx::core
             {
             case SDL_QUIT:
                 Engine::Instance().Quit();
+                break;
+            case SDL_KEYDOWN:
+                if (e.key.keysym.sym == SDLK_ESCAPE)
+                {
+                    Engine::Instance().Quit();
+                }
                 break;
             default:
                 break;

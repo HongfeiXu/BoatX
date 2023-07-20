@@ -3,10 +3,12 @@
 #include "core/window.h"
 #include "managers/log_manager.h"
 #include "managers/path_manager.h"
+#include "managers/render_manager.h"
 
 namespace boatx
 {
-    class Engine {
+    class Engine 
+    {
     public:
         ~Engine() = default;
         // Singleton
@@ -17,6 +19,9 @@ namespace boatx
         bool Initialize(const std::string& binPath);
         void Run();
         inline void Quit() { mIsRunning = false; };
+
+        // Managers
+        inline managers::RenderManager& GetRenderManager() { return mRenderManager; }
 
     private:
         // Singleton
@@ -36,5 +41,6 @@ namespace boatx
         // Managers
         managers::PathManager   mPathManager;
         managers::LogManager    mLogManager;
+        managers::RenderManager mRenderManager;
     };
 }

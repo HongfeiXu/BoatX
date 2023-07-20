@@ -4,7 +4,8 @@
 
 namespace boatx::managers
 {
-    class PathManager {
+    class PathManager 
+    {
     public:
         PathManager() = default;
         ~PathManager() = default;

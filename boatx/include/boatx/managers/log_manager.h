@@ -4,7 +4,11 @@
 
 namespace boatx::managers
 {
-    class LogManager {
+    /************************************************************************/
+    /* Handles spdlog setup                                                 */
+    /************************************************************************/
+    class LogManager 
+    {
     public:
         LogManager() = default;
         ~LogManager() = default;
