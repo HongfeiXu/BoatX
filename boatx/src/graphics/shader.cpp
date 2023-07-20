@@ -1,17 +1,25 @@
 #include "graphics/shader.h"
+#include "graphics/helpers.h"
 #include "log.h"
 #include "glad/glad.h"
+#include <fstream>
+#include <sstream>
 
 namespace boatx::graphics
 {
-    Shader::Shader(const std::string& vsSrc, const std::string& psSrc)
+    Shader::Shader()
+        : mShaderProgram(0)
     {
-        mShaderProgram = glCreateProgram();
+    }
+
+    void Shader::InitFromString(const std::string& vsSrc, const std::string& psSrc)
+    {
+        mShaderProgram = glCreateProgram(); BOATX_CHECK_GL_ERROR;
 
         GLint success = GL_FALSE;
         const GLsizei logSize = 512;
         char infoLog[logSize];
-        
+
         // shader create and attach
         uint32_t vertexShader = glCreateShader(GL_VERTEX_SHADER);
         {
@@ -31,7 +39,7 @@ namespace boatx::graphics
         }
 
         uint32_t fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        if(success == GL_TRUE)
+        if (success == GL_TRUE)
         {
             const GLchar* glSource = psSrc.c_str();
             glShaderSource(fragmentShader, 1, &glSource, nullptr);
@@ -64,9 +72,47 @@ namespace boatx::graphics
 
         BOATX_ASSERT(success == GL_TRUE, "Error linking shader");
 
-        // Need detatch shader before delete?
         glDeleteShader(vertexShader);
         glDeleteShader(fragmentShader);
+    }
+
+    void Shader::InitFromFile(const std::string& vsPath, const std::string& psPath)
+    {
+        std::string vertexCode;
+        std::string fragmentCode;
+        std::ifstream vShaderFile;
+        std::ifstream fShaderFile;
+        vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+        fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+        try
+        {
+            vShaderFile.open(vsPath);
+            std::stringstream vShaderStream;
+            vShaderStream << vShaderFile.rdbuf();
+            vShaderFile.close();
+            vertexCode = vShaderStream.str();
+        }
+        catch (std::ifstream::failure e)
+        {
+            BOATX_ERROR("shader source file {} read fail", vsPath);
+            return;
+        }
+
+        try
+        {
+            fShaderFile.open(psPath);
+            std::stringstream fShaderStream;
+            fShaderStream << fShaderFile.rdbuf();
+            fShaderFile.close();
+            fragmentCode = fShaderStream.str();
+        }
+        catch (std::ifstream::failure e)
+        {
+            BOATX_ERROR("shader source file {} read fail", psPath);
+            return;
+        }
+
+        InitFromString(vertexCode, fragmentCode);
     }
 
     Shader::~Shader()

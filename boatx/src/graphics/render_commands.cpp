@@ -30,7 +30,7 @@ namespace boatx::graphics::rendercommands
         }
         else
         {
-            BOATX_ERROR("Attempting to execute RenderMesh with invalid data")
+            BOATX_ERROR("Attempting to execute RenderMesh with invalid data");
         }
     }
 }

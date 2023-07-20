@@ -62,25 +62,8 @@ namespace boatx
         if (mIsInitialized)
         {
             // Test Shader
-            std::string vertexShaderSource = R"(
-                #version 410 core
-                layout (location = 0) in vec3 vPos;
-                void main()
-                {
-                    gl_Position = vec4(vPos, 1.0);
-                }
-            )";
-
-            std::string fragmentShaderSource = R"(
-                #version 410 core
-                out vec4 outColor;
-
-                uniform vec3 color = vec3(0.0);
-                void main()
-                {
-                    outColor = vec4(color, 1.0);
-                }
-            )";
+            std::string vertexShaderPath = mPathManager.GetShaderPath("abc_vert.glsl");
+            std::string fragmentShaderPath = mPathManager.GetShaderPath("abc_frag.glsl");
 
             // Test Mesh
             float vertices[] = {
@@ -95,11 +78,12 @@ namespace boatx
             };
 
             std::shared_ptr<graphics::Mesh> mesh = std::make_shared<graphics::Mesh>(vertices, 4, 3, indices, 6);
-            std::shared_ptr<graphics::Shader> shader = std::make_shared<graphics::Shader>(vertexShaderSource, fragmentShaderSource);
+            std::shared_ptr<graphics::Shader> shader = std::make_shared<graphics::Shader>();
+            shader->InitFromFile(vertexShaderPath, fragmentShaderPath);
 
             shader->SetUniformFloat3("color", 1, 1, 0);
 
-            mRenderManager.SetWireFrameMode(true);
+            mRenderManager.SetWireFrameMode(false);
 
             // core loop
             while (mIsRunning)

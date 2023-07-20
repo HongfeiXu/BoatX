@@ -22,6 +22,7 @@ namespace boatx
 
         // Managers
         inline managers::RenderManager& GetRenderManager() { return mRenderManager; }
+        inline managers::PathManager& GetPathManager() { return mPathManager; }
 
     private:
         // Singleton

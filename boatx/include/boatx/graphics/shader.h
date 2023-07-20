@@ -12,8 +12,12 @@ namespace boatx::graphics
     class Shader
     {
     public:
-        Shader(const std::string& vsSrc, const std::string& psSrc);
+        Shader();
         ~Shader();
+
+        void InitFromString(const std::string& vsSrc, const std::string& psSrc);
+        void InitFromFile(const std::string& vsPath, const std::string& psPath);
+
 
         void Bind();
         void Unbind();

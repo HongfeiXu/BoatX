@@ -16,8 +16,19 @@ namespace boatx::managers
     std::string PathManager::GetLogFolderPath() const
     {
         fs::path temp(mBinFilePath);
-        auto logFolderPath = platform::PathUtils::PathJoin({ temp.parent_path().string(), "logs" });
-        return logFolderPath;
+        return platform::PathUtils::PathJoin({ temp.parent_path().string(), "logs" });
+    }
+
+    std::string PathManager::GetShaderFolderPath() const
+    {
+        fs::path temp(mBinFilePath);
+        return platform::PathUtils::PathJoin({ temp.parent_path().string(), "resource", "shader"});
+    }
+
+    std::string PathManager::GetShaderPath(const std::string& shaderRelativePath) const
+    {
+        fs::path temp(mBinFilePath);
+        return platform::PathUtils::PathJoin({ temp.parent_path().string(), "resource", "shader", shaderRelativePath });
     }
 }
 
