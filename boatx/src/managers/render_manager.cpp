@@ -1,5 +1,5 @@
-#include "managers/render_manager.h"
-#include "log.h"
+#include "boatx/managers/render_manager.h"
+#include "boatx/log.h"
 #include "glad/glad.h"
 
 namespace boatx::managers

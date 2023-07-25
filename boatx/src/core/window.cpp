@@ -1,7 +1,7 @@
-#include "core/window.h"
+#include "boatx/core/window.h"
 #include "sdl2/SDL.h"
-#include "engine.h"
-#include "log.h"
+#include "boatx/engine.h"
+#include "boatx/log.h"
 #include "glad/glad.h"
 
 namespace boatx::core

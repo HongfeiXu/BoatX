@@ -25,6 +25,29 @@ namespace boatx::graphics
         uint32_t mVao, mEbo;
         uint32_t mPositionVbo;
 
-        static const uint32_t kPositionAttribIndex{0};
+        static const uint32_t kPositionAttribIndex{ 0 };
+    };
+
+    class TextQuadMesh
+    {
+    public:
+        TextQuadMesh();
+        ~TextQuadMesh();
+
+        void Config(float* vertexArray, uint32_t textureID);
+        void Bind();
+        void Unbind();
+
+        inline uint32_t GetVertexCount() const { return kVertexCount; }
+    private:
+        uint32_t mVao;
+        uint32_t mVbo;
+        uint32_t mTextureID;
+        float* mVertexArray{ nullptr };
+        
+
+        static const uint32_t kDimensions{ 4 }; // vec2 pos, vec2 tex
+        static const uint32_t kVertexCount{ 6 }; // 1 text quad has 2 triangles, 2 triangles has 6 vertices
+        static const uint32_t kPositionAttribIndex{ 0 };
     };
 }

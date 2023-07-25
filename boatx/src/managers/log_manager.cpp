@@ -1,9 +1,9 @@
-#include "managers/log_manager.h"
+#include "boatx/managers/log_manager.h"
 
-#include "log.h"
+#include "boatx/log.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/basic_file_sink.h"
-#include "platform/path_utils.h"
+#include "boatx/platform/path_utils.h"
 
 #include <memory>
 #include <filesystem>

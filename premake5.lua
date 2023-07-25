@@ -18,6 +18,7 @@ external["maclibs"] = "external/maclibs"
 external["sdl2"] = "external/sdl2"
 external["spdlog"] = "external/spdlog"
 external["glad"] = "external/glad"
+external["freetype"] = "external/freetype"
 
 -- Process Glad before anything else
 include "external/glad"
@@ -36,16 +37,18 @@ project "boatx"
     files
     {
         "%{prj.name}/include/**.h",
+        "%{prj.name}/include/**.hpp",
         "%{prj.name}/src/**.h",
         "%{prj.name}/src/**.cpp",
     }
 
     externalincludedirs
     {
-        "%{prj.name}/include/boatx",
+        "%{prj.name}/include",
         "%{external.sdl2}/include",
         "%{external.spdlog}/include",
-        "%{external.glad}/include"
+        "%{external.glad}/include",
+        "%{external.freetype}/include"
     }
 
     flags
@@ -137,12 +140,14 @@ project "boatxeditor"
         }
         libdirs
         {
-            "%{external.sdl2}/lib"
+            "%{external.sdl2}/lib",
+            "%{external.freetype}/lib",
         }
         links
         {
             "SDL2",
-            "glad"
+            "glad",
+            "freetype"
         }
 
     filter {"system:macosx" , "configurations:*"}

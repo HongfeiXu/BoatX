@@ -3,6 +3,7 @@
 #include <string>
 #include <cinttypes>
 #include <unordered_map>
+#include "external/glm/glm.hpp"
 
 namespace boatx::graphics 
 {
@@ -28,10 +29,10 @@ namespace boatx::graphics
         void SetUniformFloat2(const std::string& name, float val1, float val2);
         void SetUniformFloat3(const std::string& name, float val1, float val2, float val3);
         void SetUniformFloat4(const std::string& name, float val1, float val2, float val3, float val4);
+		void SetUniformMatrix4(const std::string& name, const glm::mat4& mat);
 
     private:
         int GetUniformLocation(const std::string& name);
-
     private:
         uint32_t mShaderProgram;
 

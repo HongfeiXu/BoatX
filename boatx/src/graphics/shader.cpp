@@ -1,6 +1,6 @@
-#include "graphics/shader.h"
-#include "graphics/helpers.h"
-#include "log.h"
+#include "boatx/graphics/shader.h"
+#include "boatx/graphics/helpers.h"
+#include "boatx/log.h"
 #include "glad/glad.h"
 #include <fstream>
 #include <sstream>
@@ -165,6 +165,12 @@ namespace boatx::graphics
     {
         glUseProgram(mShaderProgram);
         glUniform4f(GetUniformLocation(name), val1, val2, val3, val4);
+    }
+
+    void Shader::SetUniformMatrix4(const std::string& name, const glm::mat4& mat)
+    {
+        glUseProgram(mShaderProgram);
+        glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
     }
 
     int Shader::GetUniformLocation(const std::string& name)

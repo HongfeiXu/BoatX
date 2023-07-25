@@ -1,9 +1,9 @@
 #pragma once
 
-#include "core/window.h"
-#include "managers/log_manager.h"
-#include "managers/path_manager.h"
-#include "managers/render_manager.h"
+#include "boatx/core/window.h"
+#include "boatx/managers/log_manager.h"
+#include "boatx/managers/path_manager.h"
+#include "boatx/managers/render_manager.h"
 
 namespace boatx
 {

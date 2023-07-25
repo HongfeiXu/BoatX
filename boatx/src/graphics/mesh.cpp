@@ -1,4 +1,4 @@
-#include "graphics/mesh.h"
+#include "boatx/graphics/mesh.h"
 #include "glad/glad.h"
 
 namespace boatx::graphics
@@ -8,6 +8,7 @@ namespace boatx::graphics
         , mElementCount(0)
         , mVao(0)
         , mEbo(0)
+        , mPositionVbo(0)
     {
         glGenVertexArrays(1, &mVao);
         glBindVertexArray(mVao);
@@ -17,7 +18,7 @@ namespace boatx::graphics
         glBufferData(GL_ARRAY_BUFFER, vertexCount * dimensions * sizeof(float), vertexArray, GL_STATIC_DRAW);
 
         glEnableVertexAttribArray(kPositionAttribIndex);
-        glVertexAttribPointer(kPositionAttribIndex, dimensions, GL_FLOAT, GL_FALSE, 0, 0);
+        glVertexAttribPointer(kPositionAttribIndex, dimensions, GL_FLOAT, GL_FALSE, dimensions * sizeof(GL_FLOAT), 0);
         glDisableVertexAttribArray(kPositionAttribIndex);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         
@@ -57,5 +58,58 @@ namespace boatx::graphics
     {
         glDisableVertexAttribArray(kPositionAttribIndex);
         glBindVertexArray(0);
+    }
+
+    TextQuadMesh::TextQuadMesh()
+        : mVao(0)
+        , mVbo(0)
+    {
+        glGenVertexArrays(1, &mVao);
+        glBindVertexArray(mVao);
+
+        glGenBuffers(1, &mVbo);
+        glBindBuffer(GL_ARRAY_BUFFER, mVbo);
+        glBufferData(GL_ARRAY_BUFFER, kVertexCount * kDimensions * sizeof(GLfloat), nullptr, GL_DYNAMIC_DRAW);
+
+        glEnableVertexAttribArray(kPositionAttribIndex);
+        glVertexAttribPointer(kPositionAttribIndex, kDimensions, GL_FLOAT, 0, kDimensions * sizeof(GLfloat), 0);
+        glDisableVertexAttribArray(kPositionAttribIndex);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        glBindVertexArray(0);
+    }
+
+    TextQuadMesh::~TextQuadMesh()
+    {
+        glDeleteBuffers(1, &mVbo);
+        glDeleteVertexArrays(1, &mVao);
+    }
+
+    void TextQuadMesh::Bind()
+    {
+        glBindVertexArray(mVao);
+        glEnableVertexAttribArray(kPositionAttribIndex);
+
+        // set vbo
+        glBindBuffer(GL_ARRAY_BUFFER, mVbo);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, kVertexCount * kDimensions * sizeof(GLfloat), mVertexArray);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        // bind character texture
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, mTextureID);
+    }
+
+    void TextQuadMesh::Config(float* vertexArray, uint32_t textureID)
+    {
+        mVertexArray = vertexArray;
+        mTextureID = textureID;
+    }
+
+    void TextQuadMesh::Unbind()
+    {
+        glDisableVertexAttribArray(kPositionAttribIndex);
+        glBindVertexArray(0);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 }

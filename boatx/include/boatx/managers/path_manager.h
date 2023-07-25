@@ -17,6 +17,7 @@ namespace boatx::managers
         std::string GetLogFolderPath() const;
         std::string GetShaderFolderPath() const;
         std::string GetShaderPath(const std::string& shaderRelativePath) const;
+        std::string GetFontPath(const std::string& fontRelativePath) const;
 
     private:
         std::string mBinFilePath;

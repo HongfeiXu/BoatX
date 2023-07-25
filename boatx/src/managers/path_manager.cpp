@@ -1,5 +1,5 @@
-#include "managers/path_manager.h"
-#include "platform/path_utils.h"
+#include "boatx/managers/path_manager.h"
+#include "boatx/platform/path_utils.h"
 
 #include <filesystem>
 
@@ -30,5 +30,12 @@ namespace boatx::managers
         fs::path temp(mBinFilePath);
         return platform::PathUtils::PathJoin({ temp.parent_path().string(), "resource", "shader", shaderRelativePath });
     }
+
+    std::string PathManager::GetFontPath(const std::string& fontRelativePath) const
+    {
+        fs::path temp(mBinFilePath);
+        return platform::PathUtils::PathJoin({ temp.parent_path().string(), "resource", "fonts", fontRelativePath });
+    }
+
 }
 

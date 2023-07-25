@@ -1,7 +1,7 @@
 #pragma once
 
 #include <queue>
-#include "graphics/render_commands.h"
+#include "boatx/graphics/render_commands.h"
 
 namespace boatx::managers
 {
