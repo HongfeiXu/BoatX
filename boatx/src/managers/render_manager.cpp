@@ -1,4 +1,5 @@
 #include "boatx/managers/render_manager.h"
+#include "boatx/managers/font_manager.h"
 #include "boatx/log.h"
 #include "glad/glad.h"
 
@@ -83,6 +84,36 @@ namespace boatx::managers
             auto rc = std::move(mRenderCommands.front());
             mRenderCommands.pop();
             rc->Execute();
+        }
+    }
+
+    void RenderManager::RenderText(const std::string& text, FontManager& fontManager, glm::vec2 startPos, float scale)
+    {
+        GLfloat x = startPos[0], y = startPos[1];
+        for (auto c = text.cbegin(); c != text.cend(); ++c)
+        {
+            auto& ch = fontManager.GetCharacter(*c);
+            GLfloat xpos = x + ch.Bearing.x * scale;
+            GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+            GLfloat w = ch.Size.x * scale;
+            GLfloat h = ch.Size.y * scale;
+            GLfloat textVertices[] = {
+                xpos,     ypos + h,   0.0, 0.0,
+                xpos,     ypos,       0.0, 1.0,
+                xpos + w, ypos,       1.0, 1.0,
+
+                xpos,     ypos + h,   0.0, 0.0,
+                xpos + w, ypos,       1.0, 1.0,
+                xpos + w, ypos + h,   1.0, 0.0
+            };
+            auto rt = std::make_unique<graphics::rendercommands::RenderTextQuadMesh>(
+                fontManager.GetTextQuadMesh(),
+                fontManager.GetTextShader()
+            );
+            fontManager.GetTextQuadMesh()->Config(textVertices, ch.TextureID);
+            Submit(std::move(rt));
+            Flush();
+            x += (ch.Adavance >> 6) * scale;
         }
     }
 }

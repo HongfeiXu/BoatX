@@ -88,4 +88,16 @@ namespace boatx::core
     {
         SDL_GL_SwapWindow(mWindow);
     }
+
+    glm::ivec2 Window::GetWindowSize()
+    {
+        if (!mWindow)
+        {
+            return glm::ivec2(0, 0);
+        }
+        int x;
+        int y;
+        SDL_GetWindowSize(mWindow, &x, &y);
+        return glm::ivec2(x, y);
+    }
 }

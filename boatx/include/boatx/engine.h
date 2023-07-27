@@ -4,6 +4,7 @@
 #include "boatx/managers/log_manager.h"
 #include "boatx/managers/path_manager.h"
 #include "boatx/managers/render_manager.h"
+#include "boatx/managers/font_manager.h"
 
 namespace boatx
 {
@@ -43,5 +44,6 @@ namespace boatx
         managers::PathManager   mPathManager;
         managers::LogManager    mLogManager;
         managers::RenderManager mRenderManager;
+        managers::FontManager   mFontManager;
     };
 }

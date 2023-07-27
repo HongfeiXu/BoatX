@@ -1,5 +1,7 @@
 #pragma once
 
+#include "external/glm/glm.hpp"
+
 struct SDL_Window;
 
 using SDL_GLContext = void *;
@@ -28,6 +30,8 @@ namespace boatx::core
         
         void BeginRender();
         void EndRender();
+
+        glm::ivec2 GetWindowSize();
 
     private:
         SDL_Window*     mWindow;
