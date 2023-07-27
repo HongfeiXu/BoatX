@@ -138,16 +138,25 @@ project "boatxeditor"
         {
             "BOATX_PLATFORM_WINDOWS"
         }
-        libdirs
-        {
-            "%{external.sdl2}/lib",
-            "%{external.freetype}/lib",
-        }
         links
         {
             "SDL2",
             "glad",
             "freetype"
+        }
+
+    filter {"system:windows" , "configurations:Debug"}
+        libdirs
+        {
+            "%{external.sdl2}/lib",
+            "%{external.freetype}/lib/debug",
+        }
+
+    filter {"system:windows" , "configurations:Release"}
+        libdirs
+        {
+            "%{external.sdl2}/lib",
+            "%{external.freetype}/lib/release",
         }
 
     filter {"system:macosx" , "configurations:*"}
