@@ -11,7 +11,7 @@ namespace boatx::managers
         ~PathManager() = default;
 
         void Initialize(const std::string& binFilePath);
-        void ShutDown() {}
+        void ShutDown();
 
         inline std::string GetBinFilePath() const{ return mBinFilePath; }
         std::string GetLogFolderPath() const;

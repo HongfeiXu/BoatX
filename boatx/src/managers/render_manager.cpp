@@ -1,5 +1,6 @@
 #include "boatx/managers/render_manager.h"
 #include "boatx/managers/font_manager.h"
+#include "boatx/graphics/helpers.h"
 #include "boatx/log.h"
 #include "glad/glad.h"
 
@@ -11,20 +12,20 @@ namespace boatx::managers
         // OpenGL info
         {
             GLint maxVertexAttribs;
-            glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttribs);
+            glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxVertexAttribs); BOATX_CHECK_GL_ERROR;
             BOATX_INFO("OpenGL Info:\n Vendor:\t{}\n Renderer:\t{}\n GL Version:\t{}\n Shading Language Version:\t{}\nMaximum number of vertex attributes supported:\t{}", 
                 (const char*)glGetString(GL_VENDOR), 
                 (const char*)glGetString(GL_RENDERER), 
                 (const char*)glGetString(GL_VERSION), 
                 (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION),
-                maxVertexAttribs);
+                maxVertexAttribs); BOATX_CHECK_GL_ERROR;
         }
 
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LEQUAL);
+        glEnable(GL_DEPTH_TEST); BOATX_CHECK_GL_ERROR;
+        glDepthFunc(GL_LEQUAL); BOATX_CHECK_GL_ERROR;
 
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_BLEND); BOATX_CHECK_GL_ERROR;
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); BOATX_CHECK_GL_ERROR;
 
         SetClearColor(
             static_cast<float>(0x64) / static_cast<float>(0xFF),
@@ -51,12 +52,12 @@ namespace boatx::managers
             mRenderCommands.pop();
         }
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); BOATX_CHECK_GL_ERROR;
     }
 
     void RenderManager::SetClearColor(float r, float g, float b, float a)
     {
-        glClearColor(r, g, b, a);
+        glClearColor(r, g, b, a); BOATX_CHECK_GL_ERROR;
 
     }
 
@@ -64,11 +65,11 @@ namespace boatx::managers
     {
         if (enabled)
         {
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); BOATX_CHECK_GL_ERROR;
         }
         else
         {
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); BOATX_CHECK_GL_ERROR;
         }
     }
 

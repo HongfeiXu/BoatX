@@ -2,6 +2,7 @@
 
 #include "boatx/log.h"
 
+
 namespace boatx::graphics
 {
     void CheckGLError();

@@ -81,7 +81,7 @@ namespace boatx::core
 
     void Window::BeginRender()
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        Engine::Instance().GetRenderManager().Clear();
     }
 
     void Window::EndRender()

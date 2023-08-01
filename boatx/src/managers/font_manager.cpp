@@ -15,6 +15,10 @@ namespace boatx::managers
 
     void FontManager::ShutDown()
     {
+        mFontPath.clear();
+        mCharacters.clear();
+        mTextQuadMesh.reset();
+        mTextShader.reset();
     }
 
     void FontManager::LoadCharacters(const std::string& fontPath)

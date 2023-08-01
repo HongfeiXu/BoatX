@@ -3,6 +3,7 @@
 
 #include "boatx/graphics/mesh.h"
 #include "boatx/graphics/shader.h"
+#include "boatx/graphics/helpers.h"
 
 #include "glad/glad.h"
 
@@ -19,11 +20,11 @@ namespace boatx::graphics::rendercommands
             mesh->Bind();
             if (mesh->GetElementCount() > 0)
             {
-                glDrawElements(GL_TRIANGLES, mesh->GetElementCount(), GL_UNSIGNED_INT, 0);
+                glDrawElements(GL_TRIANGLES, mesh->GetElementCount(), GL_UNSIGNED_INT, 0); BOATX_CHECK_GL_ERROR;
             }
             else
             {
-                glDrawArrays(GL_TRIANGLE_STRIP, 0, mesh->GetVertexCount());
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, mesh->GetVertexCount()); BOATX_CHECK_GL_ERROR;
             }
             mesh->Unbind();
             shader->Unbind();
@@ -43,7 +44,7 @@ namespace boatx::graphics::rendercommands
         {
             shader->Bind();
             textQuadMesh->Bind();
-            glDrawArrays(GL_TRIANGLES, 0, textQuadMesh->GetVertexCount());
+            glDrawArrays(GL_TRIANGLES, 0, textQuadMesh->GetVertexCount()); BOATX_CHECK_GL_ERROR;
             textQuadMesh->Unbind();
             shader->Unbind();
         }

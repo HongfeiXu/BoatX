@@ -37,5 +37,9 @@ namespace boatx::managers
         return platform::PathUtils::PathJoin({ temp.parent_path().string(), "resource", "fonts", fontRelativePath });
     }
 
+    void PathManager::ShutDown()
+    {
+        mBinFilePath.clear();
+    }
 }
 

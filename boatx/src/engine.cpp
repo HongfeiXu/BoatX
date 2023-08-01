@@ -18,7 +18,7 @@ namespace boatx
     }
 
     bool Engine::Initialize(const std::string& binPath)
-{
+    {
         BOATX_ASSERT(!mIsInitialized, "Attempting to call Engine::Initialize() more than once!");
 
         // Initialize Managers
@@ -64,8 +64,6 @@ namespace boatx
         if (mIsInitialized)
         {
             // {Rectangle Rendering}
-            std::string vertexShaderPath = mPathManager.GetShaderPath("abc_vert.glsl");
-            std::string fragmentShaderPath = mPathManager.GetShaderPath("abc_frag.glsl");
             float vertices[] = {
                 0.5f, 0.5f, 0.0f,   // right top
                 0.5f, -0.5f, 0.0f,  // right bottom
@@ -78,43 +76,64 @@ namespace boatx
             };
             std::shared_ptr<graphics::Mesh> mesh = std::make_shared<graphics::Mesh>(vertices, 4, 3, indices, 6);
             std::shared_ptr<graphics::Shader> shader = std::make_shared<graphics::Shader>();
+            std::string vertexShaderPath = mPathManager.GetShaderPath("abc_vert.glsl");
+            std::string fragmentShaderPath = mPathManager.GetShaderPath("abc_frag.glsl");
             shader->InitFromFile(vertexShaderPath, fragmentShaderPath);
-            shader->SetUniformFloat3("color", 1, 1, 0);
+            shader->SetUniformFloat3("color", 1, 1, 1);
             // {Rectangle Rendering} end
+
+            // {Triangle Rendering}
+            float vertices2[] = {
+                -0.5f, -0.5f, 0.f,
+                 0.5f, -0.5f, 0.f,
+                 0.0f,  0.5f, 0.f
+            };
+            std::shared_ptr<graphics::Mesh> triangleMesh = std::make_shared<graphics::Mesh>(vertices2, 3, 3);
+            std::shared_ptr<graphics::Shader> triangleShader = std::make_shared<graphics::Shader>();
+            triangleShader->InitFromFile(vertexShaderPath, fragmentShaderPath);
+            triangleShader->SetUniformFloat3("color", 0.5, 0.5, 0.5);
+            // {Triangle Rendering} end
 
             // {Text Rendering}
             mFontManager.LoadCharacters(mPathManager.GetFontPath("arial.ttf"));
             mFontManager.InitTextQuadMesh();
             mFontManager.InitTextShader(mPathManager.GetShaderPath("text_vert.glsl"), mPathManager.GetShaderPath("text_frag.glsl"));
-			// {Text Rendering} end
+            // {Text Rendering} end
+
+            // fps
+            double fps = 0;
+            double deltaTime = 0;
+            auto startTime = std::chrono::steady_clock::now();
 
             mRenderManager.SetWireFrameMode(false);
-
-
-            int frameCount = 0;
-            auto startTime = std::chrono::steady_clock::now();
-            double fps = 0;
-
             // core loop
             while (mIsRunning)
             {
                 mWindow.PumpEvents();
                 mWindow.BeginRender();
                 {
-                    // render stuff..
+                    // render normal stuff..
+                    // rectangle
                     auto rc = std::make_unique<graphics::rendercommands::RenderMesh>(mesh, shader);
                     mRenderManager.Submit(std::move(rc));
+                    // triangle
+                    auto rc2 = std::make_unique<graphics::rendercommands::RenderMesh>(triangleMesh, triangleShader);
+                    mRenderManager.Submit(std::move(rc2));
+
                     mRenderManager.Flush();
 
-                    // render text...
+                    // render fps text...
                     std::string fpsString = "fps: " + std::to_string((int)fps);
                     mRenderManager.RenderText(fpsString, mFontManager, glm::vec2(10, mWindow.GetWindowSize()[1] - 30), 0.4f);
                 }
                 mWindow.EndRender();
 
-                auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - startTime).count();
-                fps = (double)frameCount / (elapsedTime / 1000.0);
-                ++frameCount;
+                // fps
+                auto endTime = std::chrono::steady_clock::now();
+                auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
+                startTime = endTime;
+                deltaTime = elapsedTime / 1000.0;
+                fps = 1.0 / deltaTime;
             }
         }
 
