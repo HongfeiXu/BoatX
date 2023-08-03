@@ -1,6 +1,7 @@
 #pragma once
 
 #include "external/glm/glm.hpp"
+#include <string>
 
 struct SDL_Window;
 
@@ -24,6 +25,7 @@ namespace boatx::core
         ~Window();
 
         bool Create(const WindowCreateInfo& windowCreateInfo);
+
         void ShutDown();
 
         void PumpEvents();
@@ -32,6 +34,10 @@ namespace boatx::core
         void EndRender();
 
         glm::ivec2 GetWindowSize();
+
+        void SetTitle(const std::string& title);
+
+        void SetSwapInterval(int interval);
 
     private:
         SDL_Window*     mWindow;

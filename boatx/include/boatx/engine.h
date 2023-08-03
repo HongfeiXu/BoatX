@@ -5,11 +5,15 @@
 #include "boatx/managers/path_manager.h"
 #include "boatx/managers/render_manager.h"
 #include "boatx/managers/font_manager.h"
+#include <chrono>
+#include <cstdint>
 
 namespace boatx
 {
     class Engine 
     {
+        static const float sFpsAlpha;
+
     public:
         ~Engine() = default;
         // Singleton
@@ -25,6 +29,9 @@ namespace boatx
         inline managers::RenderManager& GetRenderManager() { return mRenderManager; }
         inline managers::PathManager& GetPathManager() { return mPathManager; }
 
+        float GetDeltaTime() const noexcept { return mDeltaTime; }
+        uint32_t GetFps() const noexcept { return mFps; }
+
     private:
         // Singleton
         Engine();
@@ -35,15 +42,28 @@ namespace boatx
         void InitializeManagers(const std::string& binPath);
         void ShutDownManagers();
 
+        /**
+         *  Each frame can only be called once
+         */
+        void CalculateDeltaTime();
+        void CalculateFps();
+
     private:
         core::Window    mWindow;
-        bool            mIsRunning;
-        bool            mIsInitialized;
+        bool            mIsRunning{ false };
+        bool            mIsInitialized{false};
 
         // Managers
         managers::PathManager   mPathManager;
         managers::LogManager    mLogManager;
         managers::RenderManager mRenderManager;
         managers::FontManager   mFontManager;
+
+        // delta time and fps
+        float                                   mDeltaTime{ 1 };
+        std::chrono::steady_clock::time_point   mLastTickTimePoint {std::chrono::steady_clock::now()};
+        float                                   mAverageDuration{ 0.f };
+        uint32_t                                mFrameCount{ 0 };
+        uint32_t                                mFps{ 0 };
     };
 }

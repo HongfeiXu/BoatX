@@ -44,6 +44,8 @@ namespace boatx
                 // Initialize RenderManager
                 mRenderManager.Initialize();
 
+                mWindow.SetSwapInterval(0); // disable vsync 
+
                 ret = true;
                 mIsRunning = true;
                 mIsInitialized = true;
@@ -109,6 +111,9 @@ namespace boatx
             // core loop
             while (mIsRunning)
             {
+                CalculateDeltaTime();
+                CalculateFps();
+
                 mWindow.PumpEvents();
                 mWindow.BeginRender();
                 {
@@ -123,17 +128,10 @@ namespace boatx
                     mRenderManager.Flush();
 
                     // render fps text...
-                    std::string fpsString = "fps: " + std::to_string((int)fps);
+                    std::string fpsString = "fps: " + std::to_string((int)mFps);
                     mRenderManager.RenderText(fpsString, mFontManager, glm::vec2(10, mWindow.GetWindowSize()[1] - 30), 0.4f);
                 }
                 mWindow.EndRender();
-
-                // fps
-                auto endTime = std::chrono::steady_clock::now();
-                auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
-                startTime = endTime;
-                deltaTime = elapsedTime / 1000.0;
-                fps = 1.0 / deltaTime;
             }
         }
 
@@ -169,9 +167,32 @@ namespace boatx
         mPathManager.ShutDown();
     }
 
+    void Engine::CalculateDeltaTime()
+    {
+        using namespace std::chrono;
+        steady_clock::time_point tickTimePoint = steady_clock::now();
+        duration<float> timeSpan = duration_cast<duration<float>>(tickTimePoint - mLastTickTimePoint);
+        mDeltaTime = timeSpan.count();
+        mLastTickTimePoint = tickTimePoint;
+    }
+
+    const float Engine::sFpsAlpha = 1.f / 100;
+    void Engine::CalculateFps()
+    {
+        mFrameCount++;
+
+        if (mFrameCount == 1)
+        {
+            mAverageDuration = mDeltaTime;
+        }
+        else
+        {
+            mAverageDuration = mAverageDuration * (1 - sFpsAlpha) + mDeltaTime * sFpsAlpha;
+        }
+        mFps = static_cast<int>(1.f / mAverageDuration);
+    }
+
     Engine::Engine()
-        : mIsRunning(false)
-        , mIsInitialized(false)
     {
     }
 

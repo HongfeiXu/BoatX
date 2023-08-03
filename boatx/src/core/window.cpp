@@ -100,4 +100,18 @@ namespace boatx::core
         SDL_GetWindowSize(mWindow, &x, &y);
         return glm::ivec2(x, y);
     }
+
+    void Window::SetTitle(const std::string& title)
+    {
+        SDL_SetWindowTitle(mWindow, title.c_str());
+    }
+
+    void Window::SetSwapInterval(int interval)
+    {
+        int succ = SDL_GL_SetSwapInterval(interval);
+        if (succ != 0)
+        {
+            BOATX_ERROR("Error SetSwapInterval {}", SDL_GetError());
+        }
+    }
 }
