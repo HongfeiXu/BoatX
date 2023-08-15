@@ -102,4 +102,10 @@ namespace boatx::managers
        mTextShader->SetUniformFloat3("textColor", 0, 1, 0);
        mTextShader->SetUniformInt("text", 0);
     }
+
+    void FontManager::SetTextShaderProjection(const glm::ivec2& windowSize)
+    {
+        glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(windowSize.x), 0.0f, static_cast<GLfloat>(windowSize.y));
+        mTextShader->SetUniformMatrix4("projection", projection);
+    }
 }

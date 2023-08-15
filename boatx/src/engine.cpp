@@ -44,7 +44,7 @@ namespace boatx
                 // Initialize RenderManager
                 mRenderManager.Initialize();
 
-                mWindow.SetSwapInterval(0); // disable vsync 
+                //mWindow.SetSwapInterval(0); // disable vsync 
 
                 ret = true;
                 mIsRunning = true;
@@ -85,6 +85,7 @@ namespace boatx
             // {Rectangle Rendering} end
 
             // {Triangle Rendering}
+            /*
             float vertices2[] = {
                 -0.5f, -0.5f, 0.f,
                  0.5f, -0.5f, 0.f,
@@ -94,6 +95,7 @@ namespace boatx
             std::shared_ptr<graphics::Shader> triangleShader = std::make_shared<graphics::Shader>();
             triangleShader->InitFromFile(vertexShaderPath, fragmentShaderPath);
             triangleShader->SetUniformFloat3("color", 0.5, 0.5, 0.5);
+            */
             // {Triangle Rendering} end
 
             // {Text Rendering}
@@ -122,14 +124,17 @@ namespace boatx
                     auto rc = std::make_unique<graphics::rendercommands::RenderMesh>(mesh, shader);
                     mRenderManager.Submit(std::move(rc));
                     // triangle
+                    /*
                     auto rc2 = std::make_unique<graphics::rendercommands::RenderMesh>(triangleMesh, triangleShader);
                     mRenderManager.Submit(std::move(rc2));
-
+                    */
                     mRenderManager.Flush();
 
                     // render fps text...
                     std::string fpsString = "fps: " + std::to_string((int)mFps);
-                    mRenderManager.RenderText(fpsString, mFontManager, glm::vec2(10, mWindow.GetWindowSize()[1] - 30), 0.4f);
+                    int width, height;
+                    mWindow.GetSize(width, height);
+                    mRenderManager.RenderText(fpsString, glm::vec2(width, height), glm::vec2(10, 30), 0.4f);
                 }
                 mWindow.EndRender();
             }

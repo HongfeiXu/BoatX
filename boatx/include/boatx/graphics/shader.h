@@ -4,6 +4,7 @@
 #include <cinttypes>
 #include <unordered_map>
 #include "external/glm/glm.hpp"
+#include "external/glm/gtc/type_ptr.hpp"
 
 namespace boatx::graphics 
 {

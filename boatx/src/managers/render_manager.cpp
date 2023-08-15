@@ -1,5 +1,4 @@
-#include "boatx/managers/render_manager.h"
-#include "boatx/managers/font_manager.h"
+#include "boatx/engine.h"
 #include "boatx/graphics/helpers.h"
 #include "boatx/log.h"
 #include "glad/glad.h"
@@ -73,6 +72,11 @@ namespace boatx::managers
         }
     }
 
+    void RenderManager::SetViewport(int32_t x, int32_t y, int32_t width, int32_t height)
+    {
+        glViewport(x, y, width, height); BOATX_CHECK_GL_ERROR;
+    }
+
     void RenderManager::Submit(std::unique_ptr<graphics::rendercommands::RenderCommand> rc)
     {
         mRenderCommands.push(std::move(rc));
@@ -88,8 +92,13 @@ namespace boatx::managers
         }
     }
 
-    void RenderManager::RenderText(const std::string& text, FontManager& fontManager, glm::vec2 startPos, float scale)
+    void RenderManager::RenderText(const std::string& text, const glm::vec2& windowSize, const glm::vec2& startPos, float scale)
     {
+        auto& fontManager = Engine::Instance().GetFontManager();
+        fontManager.SetTextShaderProjection(windowSize);
+
+        float lengthWidthRatio = windowSize.y / windowSize.x;
+
         GLfloat x = startPos[0], y = startPos[1];
         for (auto c = text.cbegin(); c != text.cend(); ++c)
         {
@@ -97,7 +106,7 @@ namespace boatx::managers
             GLfloat xpos = x + ch.Bearing.x * scale;
             GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
             GLfloat w = ch.Size.x * scale;
-            GLfloat h = ch.Size.y * scale;
+            GLfloat h = ch.Size.y * scale * lengthWidthRatio;
             GLfloat textVertices[] = {
                 xpos,     ypos + h,   0.0, 0.0,
                 xpos,     ypos,       0.0, 1.0,

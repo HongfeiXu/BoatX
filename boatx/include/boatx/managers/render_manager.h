@@ -8,8 +8,6 @@
 
 namespace boatx::managers
 {
-    class FontManager;
-
     class RenderManager
     {
     public:
@@ -22,6 +20,7 @@ namespace boatx::managers
         void Clear();
         void SetClearColor(float r, float g, float b, float a);
         void SetWireFrameMode(bool enabled);
+        void SetViewport(int32_t x, int32_t y, int32_t width, int32_t height);
 
         void Submit(std::unique_ptr<graphics::rendercommands::RenderCommand> rc);
 
@@ -29,7 +28,7 @@ namespace boatx::managers
         // We can extend the API if we need to mitigate performance impact
         void Flush();
 
-        void RenderText(const std::string& text, FontManager& manager, glm::vec2 startPos, float scale);
+        void RenderText(const std::string& text, const glm::vec2&windowSize, const glm::vec2& startPos, float scale);
 
     private:
         std::queue<std::unique_ptr<graphics::rendercommands::RenderCommand>> mRenderCommands;

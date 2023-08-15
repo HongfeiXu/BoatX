@@ -33,7 +33,7 @@ namespace boatx::core
         void BeginRender();
         void EndRender();
 
-        glm::ivec2 GetWindowSize();
+        void GetSize(int& w, int &h);
 
         void SetTitle(const std::string& title);
 

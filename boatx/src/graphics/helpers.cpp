@@ -7,7 +7,6 @@ namespace boatx::graphics
     void CheckGLError()
     {
         GLenum error = glGetError();
-        bool shouldAssert = error != GL_NO_ERROR;
         while (error != GL_NO_ERROR)
         {
             std::string errorStr;
@@ -22,7 +21,7 @@ namespace boatx::graphics
             }
             BOATX_ERROR("OpenGL Error: {}", errorStr.c_str());
             error = glGetError();
+            BOATX_ASSERT(false, "OpenGL Error!");
         }
-        BOATX_ASSERT(!shouldAssert, "OpenGL Error!");
     }
 }

@@ -28,6 +28,7 @@ namespace boatx
         // Managers
         inline managers::RenderManager& GetRenderManager() { return mRenderManager; }
         inline managers::PathManager& GetPathManager() { return mPathManager; }
+        inline managers::FontManager& GetFontManager() { return mFontManager; }
 
         float GetDeltaTime() const noexcept { return mDeltaTime; }
         uint32_t GetFps() const noexcept { return mFps; }

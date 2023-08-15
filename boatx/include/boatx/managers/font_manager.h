@@ -36,6 +36,8 @@ namespace boatx::managers
 
         void InitTextQuadMesh();
         void InitTextShader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
+        void SetTextShaderProjection(const glm::ivec2& windowSize);
+
 
         auto GetTextQuadMesh() { return mTextQuadMesh; }
         auto GetTextShader() { return mTextShader; }

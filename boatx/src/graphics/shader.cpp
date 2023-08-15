@@ -170,7 +170,7 @@ namespace boatx::graphics
     void Shader::SetUniformMatrix4(const std::string& name, const glm::mat4& mat)
     {
         glUseProgram(mShaderProgram); BOATX_CHECK_GL_ERROR;
-        glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &mat[0][0]); BOATX_CHECK_GL_ERROR;
+        glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(mat)); BOATX_CHECK_GL_ERROR;
     }
 
     int Shader::GetUniformLocation(const std::string& name)

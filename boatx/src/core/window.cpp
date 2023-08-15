@@ -54,6 +54,7 @@ namespace boatx::core
     void Window::ShutDown()
     {
         SDL_DestroyWindow(mWindow);
+        SDL_GL_DeleteContext(mGLContext);
         mWindow = nullptr;
     }
 
@@ -73,6 +74,14 @@ namespace boatx::core
                     Engine::Instance().Quit();
                 }
                 break;
+            case SDL_WINDOWEVENT:
+                if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+                {
+                    int width, height;
+                    GetSize(width, height);
+                    Engine::Instance().GetRenderManager().SetViewport(0, 0, width, height);
+                }
+                break;
             default:
                 break;
             }
@@ -89,16 +98,9 @@ namespace boatx::core
         SDL_GL_SwapWindow(mWindow);
     }
 
-    glm::ivec2 Window::GetWindowSize()
+    void Window::GetSize(int& w, int &h)
     {
-        if (!mWindow)
-        {
-            return glm::ivec2(0, 0);
-        }
-        int x;
-        int y;
-        SDL_GetWindowSize(mWindow, &x, &y);
-        return glm::ivec2(x, y);
+        SDL_GetWindowSize(mWindow, &w, &h);
     }
 
     void Window::SetTitle(const std::string& title)
